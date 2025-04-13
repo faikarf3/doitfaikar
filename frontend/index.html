@@ -17,12 +17,28 @@
         <div>
             Points:
             <div id="point"></div>
+            <button onclick="addPoints()">ADD POINTS</button>
         </div>
     </nav>
     <main>
+        <div id="task-form">
+            <h3>Add Task</h3>
+            <input type="text" id="task-name" placeholder="Task Name">
+            <input type="date" id="task-deadline">
+            <select id="task-priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <button onclick="createTask()">Create Task</button>
+
+
+        </div>
         <div id="task">
+            <h3>ONGOING</h3>
             <div id="ongoing-task"></div>
-            <div id="completed-task"></div>
+            <h3>COMPLETED</h3>
+            <div id="completed-task"> </div>
         </div>
     </main>
     <script src="app.js"></script>
