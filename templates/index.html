@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+
+</head>
+<body>
+    <div id="profile-wrapper">
+        <div id="profile-info">
+          <div id="user-name"></div>
+          <div id="user-points"></div>
+          <div id="level-container">
+            <div id="user-level"></div>
+            <div id='user-xp'></div>
+          </div>
+          <div id="logout">
+            <button onclick="logout()">Log out</button>
+          </div>    
+        </div>
+      
+        <div id="create-task-button-container">
+          <button id="create-task-button" onclick="openTaskForm()">+ Create Task</button>
+        </div>
+    </div>
+      
+
+    <div id="task-form" style="display: none;">
+        <h2>Create Task</h2>
+        <input type="text" id="task-name" placeholder="Task Name" required>
+        <input type="text" id="task-desc" placeholder="Description">
+        <input type="date" id="task-deadline" required>
+        <select id="task-priority" name="priority" required>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+        </select>
+        <button onclick="createTask()">Create Task</button>
+        <button onclick="closeTaskForm()" id="close-task-form">Close</button>
+    </div>
+    <div id="tasks-container">
+        <h3>Ongoing Task</h3>
+        <div id="ongoing-task"></div>
+        <h3>Late Task</h3>
+        <div id="late-task"></div>
+        <h3>Completed Task</h3>
+        <div id="completed-task"></div>
+    </div>
+    <footer class="footer">
+        © 2025 DoItFaikar. All rights reserved.
+      </footer>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

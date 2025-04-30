@@ -1,11 +1,12 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', template_folder='templates')
+
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data', 'database.db')
@@ -39,6 +40,8 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(128))
+    desc = db.Column(db.String(2000))
+    picture = db.Column(db.String(256))
     deadline = db.Column(db.String(10))
     priority = db.Column(db.String(10))
     completed = db.Column(db.Boolean, default=False)
@@ -94,6 +97,7 @@ def get_stats(user_id):
             "id": task.id,
             "user_id": task.user.id,
             "name": task.name,
+            "desc": task.desc,
             "deadline": task.deadline,
             "priority": task.priority,
             "completed": task.completed,
@@ -131,12 +135,14 @@ def post_tasks(user_id):
     
     data = request.get_json()
     name = data.get('name')
+    desc = data.get('desc')
     deadline = data.get('deadline')
     priority = data.get('priority')
 
     new_task = Task(
         user_id=user_id,
         name=name,
+        desc=desc,
         deadline=deadline,
         priority=priority,
         completed=False,
@@ -159,6 +165,7 @@ def update_task(user_id, task_id):
     
     data = request.get_json()
     task.name = data.get('name', task.name)
+    task.desc = data.get('desc', task.desc)
     task.deadline = data.get('deadline', task.deadline)
     task.priority = data.get('priority', task.priority)
     task.completed = data.get('completed', task.completed)
@@ -167,9 +174,38 @@ def update_task(user_id, task_id):
     db.session.commit()
 
     return jsonify({"message": "successfully updated task"}), 200
+
+@app.route('/api/<int:user_id>/tasks/<int:task_id>', methods = ["DELETE"])
+def delete_task(user_id, task_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    if not task:
+        return jsonify({"error": "Task not found"}), 404
+    
+    db.session.delete(task)
+    db.session.commit()
+
+    return jsonify({"message": "Task successfully deleted"}), 200
         
         
 
+@app.route("/")
+def home_page():
+    return render_template("home.html")
+
+@app.route("/login")
+def login_page():
+    return render_template("login.html")
+
+@app.route("/register")
+def register_page():
+    return render_template("register.html")
+
+@app.route("/dashboard")
+def dashboard_page():
+    return render_template("index.html")  # your index.html is the dashboard
 
 
 if __name__ == '__main__':

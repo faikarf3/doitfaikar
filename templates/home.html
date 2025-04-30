@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DoItFaikar – Task Manager</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">DoItFaikar</div>
+    <div class="nav-links">
+      <a href="{{ url_for('login_page') }}">Login</a>
+      <a href="{{ url_for('register_page') }}">Register</a>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="hero">
+    <h1>Level Up Your Productivity</h1>
+    <p>Track your tasks. Earn points. Become the best version of yourself with DoItFaikar — the gamified to do app.</p>
+    <div class="hero-buttons">
+      <a href="{{ url_for('register_page') }}" class="btn primary">Get Started</a>
+      <a href="{{ url_for('login_page') }}" class="btn secondary">Login</a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    © 2025 DoItFaikar. All rights reserved.
+  </footer>
+</body>
+</html>
